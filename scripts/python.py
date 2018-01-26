@@ -25,7 +25,9 @@ def setup(setting):
     assert_available(setting)
 
     if not run("python --version") == "Python 2.7.11":
+
         old_python_path = run("echo `head -n1 /usr/bin/yum`|readlink -f `cut -c3-`")
+        if run("%s --version" % (old_python_path) ) == "Python 2.6.6" : old_python_path = "/usr/bin/python2.6"
 
         run("tar xf %s" % ( "Python-2.7.11.tgz" ) )
         with cd("Python-2.7.11"):
@@ -35,7 +37,7 @@ def setup(setting):
 
         for old_require_file in ("/usr/bin/yum", "/usr/libexec/urlgrabber-ext-down", "/usr/sbin/yum-complete-transaction"):
             if fab_exists(old_require_file):
-                run("sed -i \"1c #!$old_python_bin\" %s" % old_python_path)
+                run("sed -i \"1c #!%s\" %s" % (old_python_path, old_require_file) )
 
         run("python get-pip.py >> fabric.log")
         run("ln -sf /usr/local/bin/pip /usr/bin/pip")
