@@ -1,0 +1,18 @@
+#!/bin/bash
+#chkconfig:- 85 15
+# mongodb startup script
+
+. /etc/rc.d/init.d/functions
+case "$1" in
+    start)
+        daemon --user "mongodb" "/opt/mongodb-3.4.3/bin/mongod --config /opt/mongodb-3.4.3/conf/mongodb.conf"
+    ;;
+    stop)
+        daemon --user "mongodb" "/opt/mongodb-3.4.3/bin/mongod --shutdown --dbpath /opt/mongodb-3.4.3/data"
+    ;;
+    *)
+        echo "Usage {start|stop}" >&2
+        exit 3
+    ;;
+esac
+exit 0

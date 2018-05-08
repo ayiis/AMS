@@ -54,6 +54,7 @@ def setup(setting):
         if not fab_exists("/etc/supervisor/supervisord.conf"):
             run("mkdir -p /etc/supervisor/conf")
             run("/bin/cp -f supervisord.conf /etc/supervisor/")
+            run("/bin/cp -f start /etc/supervisor/")
             run("chown -R %s /etc/supervisor" % (setting["deployer_name"]) )
             sudo("/usr/local/bin/supervisord -c /etc/supervisor/supervisord.conf", user=setting["deployer_name"])
 

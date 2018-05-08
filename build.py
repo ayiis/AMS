@@ -15,17 +15,17 @@ from fabric.context_managers import (
 )
 
 from scripts import (
-    gcc, python, nodejs, nginx
+    gcc, python, nodejs, nginx, mongodb
 )
 
 BUILD_SETTING = [{
     "remote_user": "root",
-    "remote_ip": "192.168.32.233",
-    "remote_port": "40901",
+    "remote_ip": "47.88.226.240",
+    "remote_port": "22",
     "remote_path": "/opt/build",
-    "deployer_name": "deployer",
+    "deployer_name": "root",    # deployer
     # "all_proxy": "http://172.18.36.166:23339",
-    "OBJ": ["python", "nginx"], # "gcc", "python", "nodejs", "nginx" # U can skips any, but do not change the order
+    "OBJ": ["nginx"], # "gcc", "python", "nodejs", "nginx", "mongodb" # U can skips any, but do not change the order
 }]
 
 
@@ -45,7 +45,7 @@ def init_setting(func):
 
 
 def build_yum_base(setting):
-    run("yum-complete-transaction -y >> fabric.log")
+    # run("yum-complete-transaction -y >> fabric.log")
     run("yum install -y tcl zlib-devel openssl-devel sqlite tk-devel texinfo >> fabric.log")
     run("yum groupinstall -y \"Development tools\" >> fabric.log")
     run("yum install -y pcre-devel libstdc++-devel.i686 bzip2-devel glibc-devel.i686 >> fabric.log")
@@ -80,4 +80,5 @@ def build_main(setting):
                 if item_name == "python": python.setup(setting)
                 if item_name == "nodejs": nodejs.setup(setting)
                 if item_name == "gcc": gcc.setup(setting)
+                if item_name == "mongodb": mongodb.setup(setting)
 
